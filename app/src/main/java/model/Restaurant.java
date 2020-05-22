@@ -14,4 +14,5 @@ public class Restaurant {
     private String description;
 //    private List<String> images;
     private List<Integer> images;
+    private String category;
 }

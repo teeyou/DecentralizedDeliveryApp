@@ -36,12 +36,6 @@ public class RestaurantFragment extends Fragment {
         mContext = (MainActivity) context;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,14 +49,14 @@ public class RestaurantFragment extends Fragment {
         imageList2.add(pork);
         imageList3.add(pizza);
 
-        mRestaurantList.add(new Restaurant("음식점이름1","음식점 설명1",imageList1));
-        mRestaurantList.add(new Restaurant("음식점이름2","음식점 설명2",imageList2));
-        mRestaurantList.add(new Restaurant("음식점이름3","음식점 설명3",imageList3));
-        mRestaurantList.add(new Restaurant("음식점이름4","음식점 설명4",imageList1));
-        mRestaurantList.add(new Restaurant("음식점이름5","음식점 설명5",imageList2));
-        mRestaurantList.add(new Restaurant("음식점이름6","음식점 설명6",imageList3));
+        mRestaurantList.add(new Restaurant("음식점이름1","음식점 설명1",imageList1,"치킨"));
+        mRestaurantList.add(new Restaurant("음식점이름2","음식점 설명2",imageList2, "삼겹살"));
+        mRestaurantList.add(new Restaurant("음식점이름3","음식점 설명3",imageList3,"피자"));
+        mRestaurantList.add(new Restaurant("음식점이름4","음식점 설명4",imageList1, "치킨"));
+        mRestaurantList.add(new Restaurant("음식점이름5","음식점 설명5",imageList2, "삼겹살"));
+        mRestaurantList.add(new Restaurant("음식점이름6","음식점 설명6",imageList3, "피자"));
 
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        mRecyclerView = v.findViewById(R.id.restaurant_recyclerView);
         RestaurantRecyclerAdapter mRestaurantRecyclerAdapter = new RestaurantRecyclerAdapter(mRestaurantList);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
