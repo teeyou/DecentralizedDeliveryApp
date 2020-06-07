@@ -1,6 +1,7 @@
 package temporary.variable.android.decentralizeddeliveryapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Restaurant;
+import restaurant_detail.RestaurantDetailActivity;
 
 import static temporary.variable.android.decentralizeddeliveryapp.R.drawable.chicken;
 import static temporary.variable.android.decentralizeddeliveryapp.R.drawable.pizza;
@@ -64,7 +66,7 @@ public class RestaurantFragment extends Fragment {
         return v;
     }
 
-    static class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantViewHolder> {
+    class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantViewHolder> {
         List<Restaurant> restaurantList;
 
         public RestaurantRecyclerAdapter(List<Restaurant> list) {
@@ -80,13 +82,22 @@ public class RestaurantFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int i) {
-            Restaurant restaurant = restaurantList.get(i);
+            final Restaurant restaurant = restaurantList.get(i);
             holder.name.setText(restaurant.getName());
             holder.description.setText(restaurant.getDescription());
 
             holder.first.setImageResource(restaurant.getImages().get(0));
             holder.second.setImageResource(restaurant.getImages().get(0));
             holder.third.setImageResource(restaurant.getImages().get(0));
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
+                    intent.putExtra("restaurant", restaurant);
+                    startActivity(intent);
+                }
+            });
         }
 
         @Override
@@ -100,7 +111,7 @@ public class RestaurantFragment extends Fragment {
         }
     }
 
-    static class RestaurantViewHolder extends RecyclerView.ViewHolder {
+    class RestaurantViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView description;
 
