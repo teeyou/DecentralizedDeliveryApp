@@ -16,4 +16,6 @@ public class Restaurant implements Serializable {
 //    private List<String> images;
     private List<Integer> images;
     private String category;
+//    private List<String> filterList;
+//    private String logoImage;
 }
