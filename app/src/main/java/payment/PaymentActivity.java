@@ -1,4 +1,4 @@
-package cart;
+package payment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
+import cart.CartFragment;
 import model.Order;
-import model.Restaurant;
 import temporary.variable.android.decentralizeddeliveryapp.R;
 
-public class CartActivity extends AppCompatActivity {
+
+public class PaymentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,8 +22,7 @@ public class CartActivity extends AppCompatActivity {
         if(getIntent() != null) {
             Intent intent = getIntent();
             List<Order> cartList = (List<Order>) intent.getSerializableExtra("cartList");
-            Restaurant restaurant = (Restaurant) intent.getSerializableExtra("restaurant");
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, CartFragment.newInstance(restaurant, cartList)).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, PaymentFragment.newInstance(cartList)).commit();
         }
     }
 }

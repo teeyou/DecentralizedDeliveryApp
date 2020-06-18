@@ -12,7 +12,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant_detail);
+        setContentView(R.layout.activity_container);
         Restaurant restaurant = (Restaurant) getIntent().getSerializableExtra("restaurant");
 
 //        Log.d("RestaurantDetailActivity", restaurant.getName() + "," + restaurant.getDescription());

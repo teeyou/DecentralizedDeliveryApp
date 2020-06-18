@@ -85,9 +85,9 @@ public class SearchFragment extends Fragment {
         imageList2.add(pork);
         imageList3.add(pizza);
 
-        mRestaurantList.add(new Restaurant("치킨집","임시변수 치킨집입니다.",imageList1,"치킨"));
-        mRestaurantList.add(new Restaurant("고기집","임시변수 고기집입니다.",imageList2, "삼겹살"));
-        mRestaurantList.add(new Restaurant("피자집","임시변수 피자집입니다.",imageList3,"피자"));
+        mRestaurantList.add(new Restaurant("치킨집","임시변수 치킨집입니다.",imageList1,"치킨","충무로점"));
+        mRestaurantList.add(new Restaurant("고기집","임시변수 고기집입니다.",imageList2, "삼겹살","명동점"));
+        mRestaurantList.add(new Restaurant("피자집","임시변수 피자집입니다.",imageList3,"피자","강남점"));
 
         mToolbar = v.findViewById(R.id.search_toolbar);
         mToolbar.inflateMenu(R.menu.search);

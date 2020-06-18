@@ -51,12 +51,12 @@ public class RestaurantFragment extends Fragment {
         imageList2.add(pork);
         imageList3.add(pizza);
 
-        mRestaurantList.add(new Restaurant("음식점이름1","음식점 설명1",imageList1,"치킨"));
-        mRestaurantList.add(new Restaurant("음식점이름2","음식점 설명2",imageList2, "삼겹살"));
-        mRestaurantList.add(new Restaurant("음식점이름3","음식점 설명3",imageList3,"피자"));
-        mRestaurantList.add(new Restaurant("음식점이름4","음식점 설명4",imageList1, "치킨"));
-        mRestaurantList.add(new Restaurant("음식점이름5","음식점 설명5",imageList2, "삼겹살"));
-        mRestaurantList.add(new Restaurant("음식점이름6","음식점 설명6",imageList3, "피자"));
+        mRestaurantList.add(new Restaurant("음식점이름1","음식점 설명1",imageList1,"치킨","충무로점"));
+        mRestaurantList.add(new Restaurant("음식점이름2","음식점 설명2",imageList2, "삼겹살","명동점"));
+        mRestaurantList.add(new Restaurant("음식점이름3","음식점 설명3",imageList3,"피자", "강남점"));
+        mRestaurantList.add(new Restaurant("음식점이름4","음식점 설명4",imageList1, "치킨","홍대점"));
+        mRestaurantList.add(new Restaurant("음식점이름5","음식점 설명5",imageList2, "삼겹살", "이태원점"));
+        mRestaurantList.add(new Restaurant("음식점이름6","음식점 설명6",imageList3, "피자", "혜화점"));
 
         mRecyclerView = v.findViewById(R.id.restaurant_recyclerView);
         RestaurantRecyclerAdapter mRestaurantRecyclerAdapter = new RestaurantRecyclerAdapter(mRestaurantList);
@@ -90,13 +90,10 @@ public class RestaurantFragment extends Fragment {
             holder.second.setImageResource(restaurant.getImages().get(0));
             holder.third.setImageResource(restaurant.getImages().get(0));
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
-                    intent.putExtra("restaurant", restaurant);
-                    startActivity(intent);
-                }
+            holder.itemView.setOnClickListener(view -> {
+                Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
+                intent.putExtra("restaurant", restaurant);
+                startActivity(intent);
             });
         }
 
