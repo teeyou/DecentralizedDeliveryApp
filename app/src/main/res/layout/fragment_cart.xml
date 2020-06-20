@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/scrollView_cart"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp">
@@ -45,15 +46,9 @@
                     android:text="12,300원"
                     android:textSize="24dp"
                     android:textStyle="bold"
-                    android:textColor="#FF0000"
+                    android:textColor="#FF247CE1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="300dp">
 
             </LinearLayout>
 
@@ -64,14 +59,15 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_order"
+            android:background="#FF247CE1"
             android:text="주문하기"
+            android:textColor="#ffffff"
             android:layout_width="match_parent"
-            android:layout_height="50dp"/>
+            android:layout_height="match_parent"/>
     </LinearLayout>
-
 </LinearLayout>

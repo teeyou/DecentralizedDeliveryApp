@@ -2,7 +2,6 @@ package temporary.variable.android.decentralizeddeliveryapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import model.Restaurant;
 import restaurant_detail.RestaurantDetailActivity;
-
-import static temporary.variable.android.decentralizeddeliveryapp.R.drawable.chicken;
-import static temporary.variable.android.decentralizeddeliveryapp.R.drawable.pizza;
-import static temporary.variable.android.decentralizeddeliveryapp.R.drawable.pork;
 
 public class RestaurantFragment extends Fragment {
     private RecyclerView mRecyclerView;
@@ -47,16 +43,33 @@ public class RestaurantFragment extends Fragment {
         List<Integer> imageList1 = new ArrayList<>();
         List<Integer> imageList2 = new ArrayList<>();
         List<Integer> imageList3 = new ArrayList<>();
-        imageList1.add(chicken);
-        imageList2.add(pork);
-        imageList3.add(pizza);
+        List<Integer> imageList4 = new ArrayList<>();
+        List<Integer> imageList5 = new ArrayList<>();
+        imageList1.add(R.drawable.chicken_2);
+        imageList1.add(R.drawable.chicken_3);
+        imageList1.add(R.drawable.chicken_4);
 
-        mRestaurantList.add(new Restaurant("음식점이름1","음식점 설명1",imageList1,"치킨","충무로점"));
-        mRestaurantList.add(new Restaurant("음식점이름2","음식점 설명2",imageList2, "삼겹살","명동점"));
-        mRestaurantList.add(new Restaurant("음식점이름3","음식점 설명3",imageList3,"피자", "강남점"));
-        mRestaurantList.add(new Restaurant("음식점이름4","음식점 설명4",imageList1, "치킨","홍대점"));
-        mRestaurantList.add(new Restaurant("음식점이름5","음식점 설명5",imageList2, "삼겹살", "이태원점"));
-        mRestaurantList.add(new Restaurant("음식점이름6","음식점 설명6",imageList3, "피자", "혜화점"));
+        imageList2.add(R.drawable.pizza_1);
+        imageList2.add(R.drawable.pizza_2);
+        imageList2.add(R.drawable.pizza_3);
+
+        imageList3.add(R.drawable.dbk_1);
+        imageList3.add(R.drawable.dbk_2);
+        imageList3.add(R.drawable.dbk_3);
+
+        imageList4.add(R.drawable.jokbo_1);
+        imageList4.add(R.drawable.jokbo_2);
+        imageList4.add(R.drawable.jokbo_3);
+
+        imageList5.add(R.drawable.china_1);
+        imageList5.add(R.drawable.china_2);
+        imageList5.add(R.drawable.china_3);
+
+        mRestaurantList.add(new Restaurant("임시변수 치킨집","개발자 출신 사장님이 직접 튀기는 치킨!",R.drawable.chicken_logo,imageList1, "치킨","충무로점"));
+        mRestaurantList.add(new Restaurant("피자 핫","시카고 피자 전문점입니다.",R.drawable.pizza_logo,imageList2,"피자","홍대점"));
+        mRestaurantList.add(new Restaurant("우리집 떡볶이","떡볶이 명가 우리집입니다.",R.drawable.dbk_logo,imageList3, "분식","명동점"));
+        mRestaurantList.add(new Restaurant("행복담은족발","행복을 드려요.^^",R.drawable.jokbo_logo,imageList4,"족발", "강남점"));
+        mRestaurantList.add(new Restaurant("홍문","정통 중국요리 홍문입니다.",R.drawable.china_logo,imageList5, "중식", "이태원점"));
 
         mRecyclerView = v.findViewById(R.id.restaurant_recyclerView);
         RestaurantRecyclerAdapter mRestaurantRecyclerAdapter = new RestaurantRecyclerAdapter(mRestaurantList);
@@ -86,9 +99,11 @@ public class RestaurantFragment extends Fragment {
             holder.name.setText(restaurant.getName());
             holder.description.setText(restaurant.getDescription());
 
+            holder.logo.setImageResource(restaurant.getLogoImage());
+
             holder.first.setImageResource(restaurant.getImages().get(0));
-            holder.second.setImageResource(restaurant.getImages().get(0));
-            holder.third.setImageResource(restaurant.getImages().get(0));
+            holder.second.setImageResource(restaurant.getImages().get(1));
+            holder.third.setImageResource(restaurant.getImages().get(2));
 
             holder.itemView.setOnClickListener(view -> {
                 Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
@@ -112,14 +127,17 @@ public class RestaurantFragment extends Fragment {
         TextView name;
         TextView description;
 
+        CircleImageView logo;
+
         ImageView first;
         ImageView second;
         ImageView third;
-
         public RestaurantViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.list_item_text_view_name);
             description = itemView.findViewById(R.id.list_item_text_view_description);
+
+            logo = itemView.findViewById(R.id.list_item_restaurant_logo_image);
             first = itemView.findViewById(R.id.list_item_image_view_first);
             second = itemView.findViewById(R.id.list_item_image_view_second);
             third = itemView.findViewById(R.id.list_item_image_view_third);

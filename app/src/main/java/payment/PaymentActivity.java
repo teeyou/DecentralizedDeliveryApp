@@ -19,10 +19,12 @@ public class PaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_container);
 
-        if(getIntent() != null) {
-            Intent intent = getIntent();
-            List<Order> cartList = (List<Order>) intent.getSerializableExtra("cartList");
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, PaymentFragment.newInstance(cartList)).commit();
-        }
+//        if(getIntent() != null) {
+//            Intent intent = getIntent();
+//            List<Order> cartList = (List<Order>) intent.getSerializableExtra("cartList");
+//            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, PaymentFragment.newInstance(cartList)).commit();
+//        }
+
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new PaymentFragment()).commit();
     }
 }

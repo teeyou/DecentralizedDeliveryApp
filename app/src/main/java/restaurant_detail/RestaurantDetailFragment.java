@@ -1,8 +1,11 @@
 package restaurant_detail;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +13,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +47,7 @@ public class RestaurantDetailFragment extends Fragment {
     private Restaurant mRestaurant;
 
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private Toolbar mToolbar;
     private FloatingActionButton mCartFab;
 
     private BottomSheetBehavior mBottomSheetBehavior;
@@ -55,13 +61,14 @@ public class RestaurantDetailFragment extends Fragment {
     private TextView mCount;
     private TextView mMenuName;
     private TextView mCartCount;
+    private TextView mSubtitle;
 
     private Button mButtonAddCart;
 
     private int cnt = 1;
     private int price = 0;
 
-    private List<Order> mCartList;
+    public static List<Order> mCartList;
     private Menu mMenu;
 
     public static RestaurantDetailFragment newInstance(Restaurant restaurant) {
@@ -75,19 +82,31 @@ public class RestaurantDetailFragment extends Fragment {
         return fragment;
     }
 
-    public RestaurantDetailFragment() {}
+    public RestaurantDetailFragment() {
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = (RestaurantDetailActivity) context;
+//        Log.d("MYTAG", "onAttach");
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Log.d("MYTAG", "onResume");
+
+        if(mCartList.size() > 0)
+            mCartCount.setText(String.valueOf(mCartList.size()));
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_restaurant_detail, container, false);
-
+//        Log.d("MYTAG", "onCreateView");
         mCartList = new ArrayList<>();
 
         mCartCount = v.findViewById(R.id.textView_cart_count);
@@ -99,7 +118,7 @@ public class RestaurantDetailFragment extends Fragment {
         mButtonAddCart = v.findViewById(R.id.btn_add_cart);
 
         mMinus.setOnClickListener(view -> {
-            if(cnt >= 2) {
+            if (cnt >= 2) {
                 cnt--;
                 price -= mMenu.getPrice();
             }
@@ -118,23 +137,24 @@ public class RestaurantDetailFragment extends Fragment {
 
         mButtonAddCart.setOnClickListener(view -> {
             Menu menu = new Menu(mMenu.getName(), mMenu.getPrice(), mMenu.getDescription(), mMenu.getImage());
-            mCartList.add(new Order(menu,cnt,price));
+            mCartList.add(new Order(menu, cnt, price));
 
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             mCartCount.setText(String.valueOf(mCartList.size()));
+            Toast.makeText(getContext(),"장바구니에 추가되었습니다.",Toast.LENGTH_SHORT).show();
         });
 
         mLinearLayout = v.findViewById(R.id.bottom_sheet_layout);
         mBottomSheetBehavior = BottomSheetBehavior.from(mLinearLayout);
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             mRestaurant = (Restaurant) getArguments().getSerializable("restaurant");
         }
 
         mCartFab = v.findViewById(R.id.fab_cart);
         mCartFab.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), CartActivity.class);
-            intent.putExtra("cartList", (Serializable) mCartList);
+//            intent.putExtra("cartList", (Serializable) mCartList);
             intent.putExtra("restaurant", (Serializable) mRestaurant);
             startActivity(intent);
         });
@@ -144,19 +164,42 @@ public class RestaurantDetailFragment extends Fragment {
         mCollapsingToolbarLayout = v.findViewById(R.id.toolbar_layout);
         mCollapsingToolbarLayout.setTitle(mRestaurant.getName());
         mCollapsingToolbarLayout.setBackgroundResource(mRestaurant.getImages().get(0));
+        mCollapsingToolbarLayout.setExpandedTitleColor(Color.BLACK);
 
+        mSubtitle = v.findViewById(R.id.textView_toolbar_subtitle);
+        mSubtitle.setText(mRestaurant.getLocation());
+
+        mToolbar = v.findViewById(R.id.toolbar);
+        mToolbar.setTitle(mRestaurant.getName() + " " + mRestaurant.getLocation());
         mRecyclerView = v.findViewById(R.id.recyclerView);
 
         mMenuList = new ArrayList<>();
-        mMenuList.add(new Menu("음식이름1",  10000, "음식설명1", R.drawable.chicken));
-        mMenuList.add(new Menu("음식이름2",  20000, "음식설명2", R.drawable.pizza));
-        mMenuList.add(new Menu("음식이름3",  30000, "음식설명3", R.drawable.pork));
-        mMenuList.add(new Menu("음식이름4",  40000, "음식설명4", R.drawable.chicken));
-        mMenuList.add(new Menu("음식이름5",  50000, "음식설명5", R.drawable.pizza));
-        mMenuList.add(new Menu("음식이름6",  60000, "음식설명6", R.drawable.pork));
-        mMenuList.add(new Menu("음식이름7",  70000, "음식설명7", R.drawable.chicken));
-        mMenuList.add(new Menu("음식이름8",  80000, "음식설명8", R.drawable.pizza));
-        mMenuList.add(new Menu("음식이름9",  90000, "음식설명9", R.drawable.pork));
+
+        if (mRestaurant.getName().equals("임시변수 치킨집")) {
+            mMenuList.add(new Menu("객체지향치킨", 14000, "후라이드치킨", R.drawable.chicken_1));
+            mMenuList.add(new Menu("DES치킨", 15000, "핫후라이드치킨", R.drawable.chicken_2));
+            mMenuList.add(new Menu("엔지니어링 간장치킨", 15000, "간장치킨", R.drawable.chicken_3));
+            mMenuList.add(new Menu("RSA치킨", 15000, "양념치킨", R.drawable.chicken_4));
+            mMenuList.add(new Menu("암호핫 네트워크 양념", 16000, "핫양념치킨", R.drawable.small_chicken_3));
+            mMenuList.add(new Menu("심프닭", 16000, "파닭", R.drawable.small_chicken_2));
+            mMenuList.add(new Menu("DES반 RSA반", 16000, "핫후라이드 반 양념 반 ", R.drawable.small_chicken_1));
+        } else if (mRestaurant.getName().equals("피자 핫")) {
+            mMenuList.add(new Menu("클래식 토마토 시카고피자", 15000, "음식설명1", R.drawable.pizza_1));
+            mMenuList.add(new Menu("콰트로 포르마쥬 시카고피자", 16000, "음식설명2", R.drawable.pizza_2));
+            mMenuList.add(new Menu("바질 페스토 시카고피자", 15000, "음식설명3", R.drawable.pizza_3));
+        } else if (mRestaurant.getName().equals("우리집 떡볶이")) {
+            mMenuList.add(new Menu("떡볶이 1인분", 3000, "음식설명1", R.drawable.dbk_1));
+            mMenuList.add(new Menu("치즈떡볶이 1인분", 4000, "음식설명2", R.drawable.dbk_2));
+            mMenuList.add(new Menu("짜장떡볶이 1인분", 4000, "음식설명3", R.drawable.dbk_3));
+        } else if (mRestaurant.getName().equals("행복담은족발")) {
+            mMenuList.add(new Menu("족발보쌈세트", 35000, "음식설명1", R.drawable.jokbo_1));
+            mMenuList.add(new Menu("족발 대", 32000, "음식설명2", R.drawable.jokbo_2));
+            mMenuList.add(new Menu("보쌈 대", 32000, "음식설명3", R.drawable.jokbo_3));
+        } else if (mRestaurant.getName().equals("홍문")) {
+            mMenuList.add(new Menu("짜장면", 5000, "음식설명1", R.drawable.china_1));
+            mMenuList.add(new Menu("탕수육 소", 12000, "음식설명2", R.drawable.china_2));
+            mMenuList.add(new Menu("볶음밥", 6000, "음식설명3", R.drawable.china_3));
+        }
 
         mRestaurantRecyclerAdapter = new MenuRecyclerAdapter(mMenuList);
 
@@ -184,7 +227,7 @@ public class RestaurantDetailFragment extends Fragment {
         public void onBindViewHolder(@NonNull MenuViewHolder holder, int i) {
             final Menu menu = menuList.get(i);
             holder.name.setText(menu.getName());
-            holder.price.setText(String.valueOf(menu.getPrice()));
+            holder.price.setText(Util.numberToCommaFormat(menu.getPrice()) + "원");
             holder.description.setText(menu.getDescription());
             holder.menuImage.setImageResource(menu.getImage());
 
@@ -199,17 +242,17 @@ public class RestaurantDetailFragment extends Fragment {
 //                Log.d("MYTAG", "State : " + state);
 
                 mMenuName.setText(menu.getName());
-                mPrice.setText(Util.numberToCommaFormat(price));
+                mPrice.setText(Util.numberToCommaFormat(price) + "원");
                 mCount.setText(String.valueOf(cnt));
 
-                if(state == BottomSheetBehavior.STATE_HIDDEN) {
+                if (state == BottomSheetBehavior.STATE_HIDDEN) {
                     mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-                } else if(state == BottomSheetBehavior.STATE_COLLAPSED) {
+                } else if (state == BottomSheetBehavior.STATE_COLLAPSED) {
                     mBottomSheetBehavior.setPeekHeight(mLinearLayout.getHeight());
 //                        Log.d("MYTAG", "Height : " + mLinearLayout.getHeight());
 
-                } else if(state == BottomSheetBehavior.STATE_EXPANDED){
+                } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
 
                 }
             });

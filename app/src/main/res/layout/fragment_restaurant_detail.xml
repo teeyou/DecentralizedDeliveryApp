@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#ffffff"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,19 +17,38 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/pizza"
+            android:background="@drawable/pizza_1"
             android:fitsSystemWindows="true"
-            app:title="Title"
-            app:expandedTitleGravity="bottom|center_horizontal"
             app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleGravity="bottom|center_horizontal"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="Title"
+            app:expandedTitleMarginBottom="48dp"
             app:toolbarId="@+id/toolbar">
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center|bottom"
+                android:background="#E2FFFFFF" />
+
+            <TextView
+                android:id="@+id/textView_toolbar_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center_horizontal"
+                android:layout_marginBottom="16dp"
+                android:text="subtitle"
+                android:textSize="12sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#000000"
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -69,7 +89,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
 
-        android:textColor="#1ECE86"
+        android:textColor="#247CE1"
         android:textSize="16dp"
         app:layout_anchor="@+id/constraintLayout"
         app:layout_anchorGravity="top|center"

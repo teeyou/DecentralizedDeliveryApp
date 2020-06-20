@@ -2,7 +2,6 @@ package temporary.variable.android.decentralizeddeliveryapp;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Restaurant;
-
-import static temporary.variable.android.decentralizeddeliveryapp.R.drawable.chicken;
-import static temporary.variable.android.decentralizeddeliveryapp.R.drawable.pizza;
-import static temporary.variable.android.decentralizeddeliveryapp.R.drawable.pork;
 
 public class SearchFragment extends Fragment {
     private RecyclerView mRecyclerView;
@@ -77,17 +72,6 @@ public class SearchFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
         mRestaurantList = new ArrayList<>();
-
-        List<Integer> imageList1 = new ArrayList<>();
-        List<Integer> imageList2 = new ArrayList<>();
-        List<Integer> imageList3 = new ArrayList<>();
-        imageList1.add(chicken);
-        imageList2.add(pork);
-        imageList3.add(pizza);
-
-        mRestaurantList.add(new Restaurant("치킨집","임시변수 치킨집입니다.",imageList1,"치킨","충무로점"));
-        mRestaurantList.add(new Restaurant("고기집","임시변수 고기집입니다.",imageList2, "삼겹살","명동점"));
-        mRestaurantList.add(new Restaurant("피자집","임시변수 피자집입니다.",imageList3,"피자","강남점"));
 
         mToolbar = v.findViewById(R.id.search_toolbar);
         mToolbar.inflateMenu(R.menu.search);

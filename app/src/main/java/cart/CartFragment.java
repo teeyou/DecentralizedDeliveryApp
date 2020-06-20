@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +27,11 @@ import java.util.List;
 import model.Order;
 import model.Restaurant;
 import payment.PaymentActivity;
+import restaurant_detail.RestaurantDetailFragment;
 import temporary.variable.android.decentralizeddeliveryapp.R;
 import util.Util;
+
+import static restaurant_detail.RestaurantDetailFragment.mCartList;
 
 
 public class CartFragment extends Fragment {
@@ -34,7 +40,7 @@ public class CartFragment extends Fragment {
     private Button mBtnOrder;
 
     private Restaurant mRestaurant;
-    private List<Order> mCartList;
+//    private List<Order> mCartList;
 
     private RecyclerView mRecyclerView;
     private CartRecyclerAdapter mCartRecyclerAdapter;
@@ -45,6 +51,14 @@ public class CartFragment extends Fragment {
         Bundle args = new Bundle();
         args.putSerializable("restaurant", (Serializable) restaurant);
         args.putSerializable("cartList", (Serializable) list);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static CartFragment newInstance(Restaurant restaurant) {
+        CartFragment fragment = new CartFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("restaurant", (Serializable) restaurant);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,32 +74,40 @@ public class CartFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_cart, container, false);
+        View v = null;
 
-        mRestaurantName = v.findViewById(R.id.textView_cart_restaurant_name);
-        mTotalPrice = v.findViewById(R.id.textView_cart_total_price);
-        mBtnOrder = v.findViewById(R.id.btn_order);
-        mRecyclerView = v.findViewById(R.id.cart_recyclerView);
 
-        mCartRecyclerAdapter = new CartRecyclerAdapter();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-        mRecyclerView.setAdapter(mCartRecyclerAdapter);
 
         if (getArguments() != null) {
             mRestaurant = (Restaurant) getArguments().getSerializable("restaurant");
-            mCartList = (List<Order>) getArguments().getSerializable("cartList");
+//            mCartList = (List<Order>) getArguments().getSerializable("cartList");
 
-            mTotalPrice.setText(Util.numberToCommaFormat(calculateTotalPrice(mCartList)));
-            mRestaurantName.setText(mRestaurant.getName() + " " + mRestaurant.getLocation());
-            mCartRecyclerAdapter.setCartList(mCartList);
+            if(mCartList.size() > 0) {
+                v = inflater.inflate(R.layout.fragment_cart, container, false);
+
+                mRestaurantName = v.findViewById(R.id.textView_cart_restaurant_name);
+                mTotalPrice = v.findViewById(R.id.textView_cart_total_price);
+                mBtnOrder = v.findViewById(R.id.btn_order);
+                mRecyclerView = v.findViewById(R.id.cart_recyclerView);
+
+                mTotalPrice.setText(Util.numberToCommaFormat(calculateTotalPrice(mCartList)));
+                mRestaurantName.setText(mRestaurant.getName() + " " + mRestaurant.getLocation());
+
+                mCartRecyclerAdapter = new CartRecyclerAdapter();
+                mCartRecyclerAdapter.setCartList(mCartList);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+                mRecyclerView.setAdapter(mCartRecyclerAdapter);
+
+                mBtnOrder.setOnClickListener(view -> {
+                    Intent intent = new Intent(getContext(), PaymentActivity.class);
+//                    intent.putExtra("cartList", (Serializable) mCartList);
+                    startActivity(intent);
+                });
+            } else {
+                v = inflater.inflate(R.layout.fragment_empty, container, false);
+            }
         }
-
-        mBtnOrder.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), PaymentActivity.class);
-            intent.putExtra("cartList", (Serializable) mCartList);
-            startActivity(intent);
-        });
 
         return v;
     }
@@ -96,8 +118,9 @@ public class CartFragment extends Fragment {
 
         return price;
     }
+    
     class CartRecyclerAdapter extends RecyclerView.Adapter<CartViewHolder> {
-        List<Order> cartList;
+//        List<Order> cartList;
 
         public CartRecyclerAdapter() {
 //            cartList = list;
@@ -112,23 +135,26 @@ public class CartFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull CartViewHolder holder, int i) {
-            final Order order = cartList.get(i);
+            final Order order = mCartList.get(i);
 
             holder.menuName.setText(order.getMenu().getName());
-            holder.count.setText("수량 : " + String.valueOf(order.getCount()));
+            holder.count.setText("수량 : " + order.getCount());
             holder.price.setText(Util.numberToCommaFormat(order.getOrderPrice()));
             holder.btnDelete.setOnClickListener(view -> {
-
+                mCartList.remove(i);
+                mTotalPrice.setText(Util.numberToCommaFormat(calculateTotalPrice(mCartList)));
+                setCartList(mCartList);
+                Toast.makeText(getContext(),"삭제되었습니다." , Toast.LENGTH_SHORT).show();
             });
         }
 
         @Override
         public int getItemCount() {
-            return cartList.size();
+            return mCartList.size();
         }
 
         public void setCartList(List<Order> list) {
-            cartList = list;
+            mCartList = list;
             notifyDataSetChanged();
         }
     }
