@@ -28,7 +28,8 @@ import model.Restaurant;
 import temporary.variable.android.decentralizeddeliveryapp.R;
 import util.Util;
 
-import static restaurant_detail.RestaurantDetailFragment.mCartList;
+//import static restaurant_detail.RestaurantDetailFragment.mCartList;
+import static restaurant_detail.RestaurantDetailActivity.mCartList;
 
 public class PaymentFragment extends Fragment {
     private static final String PRIMARY_COLOR = "#FF247CE1";

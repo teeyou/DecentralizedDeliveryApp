@@ -71,7 +71,53 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
+
         mRestaurantList = new ArrayList<>();
+        List<Integer> imageList1 = new ArrayList<>();
+        List<Integer> imageList2 = new ArrayList<>();
+        List<Integer> imageList3 = new ArrayList<>();
+        List<Integer> imageList4 = new ArrayList<>();
+        List<Integer> imageList5 = new ArrayList<>();
+        imageList1.add(R.drawable.chicken_2);
+        imageList1.add(R.drawable.chicken_3);
+        imageList1.add(R.drawable.chicken_4);
+
+        imageList2.add(R.drawable.pizza_1);
+        imageList2.add(R.drawable.pizza_2);
+        imageList2.add(R.drawable.pizza_3);
+
+        imageList3.add(R.drawable.dbk_1);
+        imageList3.add(R.drawable.dbk_2);
+        imageList3.add(R.drawable.dbk_3);
+
+        imageList4.add(R.drawable.jokbo_1);
+        imageList4.add(R.drawable.jokbo_2);
+        imageList4.add(R.drawable.jokbo_3);
+
+        imageList5.add(R.drawable.china_1);
+        imageList5.add(R.drawable.china_2);
+        imageList5.add(R.drawable.china_3);
+
+        mRestaurantList.add(new Restaurant("임시변수 치킨집","개발자 출신 사장님이 직접 튀기는 치킨!",R.drawable.chicken_logo,imageList1, "치킨","충무로점"));
+        mRestaurantList.add(new Restaurant("피자 핫","시카고 피자 전문점입니다.",R.drawable.pizza_logo,imageList2,"피자","명동점"));
+        mRestaurantList.add(new Restaurant("우리집 떡볶이","떡볶이 명가 우리집입니다.",R.drawable.dbk_logo,imageList3, "분식","홍대점"));
+        mRestaurantList.add(new Restaurant("행복담은족발","행복을 드려요.^^",R.drawable.jokbo_logo,imageList4,"족발", "강남점"));
+        mRestaurantList.add(new Restaurant("홍문","정통 중국요리 홍문입니다.",R.drawable.china_logo,imageList5, "중식", "이태원점"));
+
+        mRestaurantList.add(new Restaurant("임시변수 치킨집","개발자 출신 사장님이 직접 튀기는 치킨!",R.drawable.chicken_logo,imageList1, "치킨","충무로점"));
+        mRestaurantList.add(new Restaurant("피자 핫","시카고 피자 전문점입니다.",R.drawable.pizza_logo,imageList2,"피자","명동점"));
+        mRestaurantList.add(new Restaurant("우리집 떡볶이","떡볶이 명가 우리집입니다.",R.drawable.dbk_logo,imageList3, "분식","홍대점"));
+        mRestaurantList.add(new Restaurant("행복담은족발","행복을 드려요.^^",R.drawable.jokbo_logo,imageList4,"족발", "강남점"));
+        mRestaurantList.add(new Restaurant("홍문","정통 중국요리 홍문입니다.",R.drawable.china_logo,imageList5, "중식", "이태원점"));
+
+        mRestaurantList.add(new Restaurant("임시변수 치킨집","개발자 출신 사장님이 직접 튀기는 치킨!",R.drawable.chicken_logo,imageList1, "치킨","충무로점"));
+        mRestaurantList.add(new Restaurant("피자 핫","시카고 피자 전문점입니다.",R.drawable.pizza_logo,imageList2,"피자","명동점"));
+        mRestaurantList.add(new Restaurant("우리집 떡볶이","떡볶이 명가 우리집입니다.",R.drawable.dbk_logo,imageList3, "분식","홍대점"));
+        mRestaurantList.add(new Restaurant("행복담은족발","행복을 드려요.^^",R.drawable.jokbo_logo,imageList4,"족발", "강남점"));
+        mRestaurantList.add(new Restaurant("홍문","정통 중국요리 홍문입니다.",R.drawable.china_logo,imageList5, "중식", "이태원점"));
+
+
+
 
         mToolbar = v.findViewById(R.id.search_toolbar);
         mToolbar.inflateMenu(R.menu.search);

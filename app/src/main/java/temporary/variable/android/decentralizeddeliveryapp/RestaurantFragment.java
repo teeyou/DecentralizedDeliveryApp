@@ -37,7 +37,7 @@ public class RestaurantFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_restaurant, container, false);
+        View v = inflater.inflate(R.layout.fragment_recycler_view, container, false);
 
         mRestaurantList = new ArrayList<>();
         List<Integer> imageList1 = new ArrayList<>();
@@ -66,8 +66,8 @@ public class RestaurantFragment extends Fragment {
         imageList5.add(R.drawable.china_3);
 
         mRestaurantList.add(new Restaurant("임시변수 치킨집","개발자 출신 사장님이 직접 튀기는 치킨!",R.drawable.chicken_logo,imageList1, "치킨","충무로점"));
-        mRestaurantList.add(new Restaurant("피자 핫","시카고 피자 전문점입니다.",R.drawable.pizza_logo,imageList2,"피자","홍대점"));
-        mRestaurantList.add(new Restaurant("우리집 떡볶이","떡볶이 명가 우리집입니다.",R.drawable.dbk_logo,imageList3, "분식","명동점"));
+        mRestaurantList.add(new Restaurant("피자 핫","시카고 피자 전문점입니다.",R.drawable.pizza_logo,imageList2,"피자","명동점"));
+        mRestaurantList.add(new Restaurant("우리집 떡볶이","떡볶이 명가 우리집입니다.",R.drawable.dbk_logo,imageList3, "분식","홍대점"));
         mRestaurantList.add(new Restaurant("행복담은족발","행복을 드려요.^^",R.drawable.jokbo_logo,imageList4,"족발", "강남점"));
         mRestaurantList.add(new Restaurant("홍문","정통 중국요리 홍문입니다.",R.drawable.china_logo,imageList5, "중식", "이태원점"));
 
@@ -96,7 +96,7 @@ public class RestaurantFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int i) {
             final Restaurant restaurant = restaurantList.get(i);
-            holder.name.setText(restaurant.getName());
+            holder.name.setText(restaurant.getName() + " " + restaurant.getLocation());
             holder.description.setText(restaurant.getDescription());
 
             holder.logo.setImageResource(restaurant.getLogoImage());

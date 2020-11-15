@@ -27,12 +27,12 @@ import java.util.List;
 import model.Order;
 import model.Restaurant;
 import payment.PaymentActivity;
-import restaurant_detail.RestaurantDetailFragment;
+//import restaurant_detail.RestaurantDetailFragment;
 import temporary.variable.android.decentralizeddeliveryapp.R;
 import util.Util;
 
-import static restaurant_detail.RestaurantDetailFragment.mCartList;
-
+//import static restaurant_detail.RestaurantDetailFragment.mCartList;
+import static restaurant_detail.RestaurantDetailActivity.mCartList;
 
 public class CartFragment extends Fragment {
     private TextView mRestaurantName;
@@ -118,7 +118,7 @@ public class CartFragment extends Fragment {
 
         return price;
     }
-    
+
     class CartRecyclerAdapter extends RecyclerView.Adapter<CartViewHolder> {
 //        List<Order> cartList;
 
