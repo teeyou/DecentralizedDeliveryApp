@@ -13,6 +13,8 @@ import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import data_source.Repository;
+
 public class MainActivity extends AppCompatActivity {
     private FrameLayout mRestaurantLayout;
     private FrameLayout mSearchLayout;
@@ -26,11 +28,17 @@ public class MainActivity extends AppCompatActivity {
     private SettingsFragment mSettingsFragment;
 
     private FragmentManager mFragmentManager;
-
+    private Repository mRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mRepository = Repository.getInstance(getApplicationContext());
+        mRepository.getRestaurantList();
+        mRepository.getOrderStateList();
+        mRepository.getMenuList();
+
 
         mFragmentManager = getSupportFragmentManager();
 
