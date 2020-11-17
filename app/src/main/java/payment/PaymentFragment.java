@@ -1,5 +1,6 @@
 package payment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +27,7 @@ import java.util.List;
 
 import model.Order;
 import model.Restaurant;
+import temporary.variable.android.decentralizeddeliveryapp.MainActivity;
 import temporary.variable.android.decentralizeddeliveryapp.R;
 import util.Util;
 
@@ -51,6 +54,8 @@ public class PaymentFragment extends Fragment {
     private RadioButton mRadioInapp;
     private RadioButton mRadioOffline;
 
+    private Button mButtonPay;
+
     public static PaymentFragment newInstance(List<Order> list) {
         PaymentFragment fragment = new PaymentFragment();
         Bundle args = new Bundle();
@@ -74,28 +79,33 @@ public class PaymentFragment extends Fragment {
         mButtonSmilepay = v.findViewById(R.id.btn_payment_smile_pay);
 
         mGridLayout = v.findViewById(R.id.grid_layout);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(0, 0);
+        mGridLayout.setLayoutParams(param);
+
         mLinearLayout = v.findViewById(R.id.linearLayout_order_info);
         mTotalPrice = v.findViewById(R.id.textView_payment_total_price);
 
         mRadioInapp = v.findViewById(R.id.radio_in_app);
         mRadioOffline = v.findViewById(R.id.radio_offline);
 
-        mRadioInapp.setOnClickListener(view -> {
-            mRadioInapp.setChecked(true);
-            mRadioOffline.setChecked(false);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            mGridLayout.setLayoutParams(params);
-//            mGridLayout.setVisibility(View.VISIBLE);
-        });
+        mButtonPay = v.findViewById(R.id.btn_pay);
 
         mRadioOffline.setOnClickListener(view -> {
-            mRadioInapp.setChecked(false);
             mRadioOffline.setChecked(true);
+            mRadioInapp.setChecked(false);
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, 0);
             mGridLayout.setLayoutParams(params);
 //            mGridLayout.setVisibility(View.INVISIBLE);
+        });
+
+        mRadioInapp.setOnClickListener(view -> {
+            mRadioOffline.setChecked(false);
+            mRadioInapp.setChecked(true);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mGridLayout.setLayoutParams(params);
+//            mGridLayout.setVisibility(View.VISIBLE);
         });
 
 //        if (getArguments() != null) {
@@ -130,6 +140,13 @@ public class PaymentFragment extends Fragment {
             setTextColor(5);
         });
 
+        mButtonPay.setOnClickListener(view -> {
+            Toast.makeText(getContext(),"주문 완료되었습니다.",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
+        });
         return v;
     }
 

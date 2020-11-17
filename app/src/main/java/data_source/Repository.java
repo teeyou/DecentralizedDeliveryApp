@@ -47,12 +47,12 @@ public class Repository {
         restaurantApi.getRestaurantList().enqueue(new Callback<List<List<String>>>() {
             @Override
             public void onResponse(Call<List<List<String>>> call, Response<List<List<String>>> response) {
-                Log.d("MYTAG", "data : " + response.body().get(0).get(0));
+
             }
 
             @Override
             public void onFailure(Call<List<List<String>>> call, Throwable t) {
-                Log.d("MYTAG", "fail : " + t.getMessage());
+
             }
         });
         return sRestaurantList;
