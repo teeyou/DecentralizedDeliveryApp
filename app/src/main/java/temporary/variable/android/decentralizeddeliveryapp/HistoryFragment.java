@@ -20,11 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import data_source.Repository;
 import de.hdodenhof.circleimageview.CircleImageView;
 import model.Menu;
-import model.Order;
 import model.OrderState;
 import model.Restaurant;
+import model_server.orders.Order;
+import model_server.orders.Purchased;
 import restaurant_detail.RestaurantDetailActivity;
 
 public class HistoryFragment extends Fragment {
@@ -42,9 +44,35 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recycler_view,container,false);
         mOrderStateList = new ArrayList<>();
-        mOrderStateList.add(new OrderState("치킨집",R.drawable.chicken_logo,new Menu("메뉴이름",12345,"설명",R.drawable.chicken_logo),"time1","배달중"));
-        mOrderStateList.add(new OrderState("피자집",R.drawable.pizza_logo,new Menu("피자이름",12346,"설명2",R.drawable.china_logo),"time2","배달완료"));
-        mOrderStateList.add(new OrderState("족발집",R.drawable.china_logo,new Menu("족발이름",12347,"설명3",R.drawable.pizza_logo),"time3","배달완료"));
+
+        List<Order> list = Repository.getInstance(getContext()).getOrderList();
+
+        for (int i = 0; i < list.size(); i++) {
+            StringBuilder menuName = new StringBuilder();
+            int price = 0;
+            List<Purchased> purchasedList = list.get(i).getPurchasedList();
+            for (int j = 0; j < purchasedList.size(); j++) {
+                menuName.append(purchasedList.get(j).getName()).append("x" + purchasedList.get(j).getCount()).append(" ");
+                price += purchasedList.get(j).getCount() * purchasedList.get(j).getAmount();
+            }
+
+            int state = list.get(i).getState();
+            StringBuilder orderState = new StringBuilder();
+            if(state == 0) {
+                orderState.append("주문완료");
+            } else if(state == 1) {
+                orderState.append("조리중");
+            } else if(state == 2) {
+                orderState.append("배달중");
+            } else if(state == 3) {
+                orderState.append("배달완료");
+            }
+
+            mOrderStateList.add(new OrderState(list.get(i).getWhere().getPath().get(0),R.drawable.china_logo, new Menu(menuName.toString().trim(),price,"Description",R.drawable.china_logo),list.get(i).getOrder_at(),orderState.toString()));
+        }
+//        mOrderStateList.add(new OrderState("치킨집",R.drawable.chicken_logo,new Menu("메뉴이름",12345,"설명",R.drawable.chicken_logo),"time1","배달중"));
+//        mOrderStateList.add(new OrderState("피자집",R.drawable.pizza_logo,new Menu("피자이름",12346,"설명2",R.drawable.china_logo),"time2","배달완료"));
+//        mOrderStateList.add(new OrderState("족발집",R.drawable.china_logo,new Menu("족발이름",12347,"설명3",R.drawable.pizza_logo),"time3","배달완료"));
         mRecyclerView = v.findViewById(R.id.restaurant_recyclerView);
         HistoryRecyclerAdapter mAdapter = new HistoryRecyclerAdapter(mOrderStateList);
 

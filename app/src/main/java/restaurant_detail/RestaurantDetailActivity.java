@@ -69,7 +69,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if(mCartList.size() > 0)
+        if (mCartList.size() > 0)
             mCartCount.setText(String.valueOf(calculateTotalCnt()));
 
         else
@@ -82,7 +82,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_detail);
         mCartList = new ArrayList<>();
 
-        Restaurant restaurant = (Restaurant) getIntent().getSerializableExtra("restaurant");
+        List<String> restaurant = (List<String>) getIntent().getSerializableExtra("restaurant");
 
         mCartCount = findViewById(R.id.textView_cart_count);
         mMenuName = findViewById(R.id.textView_menu_name);
@@ -115,12 +115,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
             int value = isExistMenu(menu.getName());
 
-            if(value >= 0) { //이미 카트에 존재하는 메뉴 추가
+            if (value >= 0) { //이미 카트에 존재하는 메뉴 추가
                 Log.d("MYTAG", "cart size : " + mCartList.size());
                 Order o = mCartList.get(value);
                 o.setCount(o.getCount() + cnt);
                 o.setOrderPrice(o.getOrderPrice() + price);
-                mCartList.set(value,o);
+                mCartList.set(value, o);
 
                 Log.d("MYTAG", "cart size : " + mCartList.size());
 
@@ -128,7 +128,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             mCartCount.setText(String.valueOf(calculateTotalCnt()));
-            Toast.makeText(getApplicationContext(),"장바구니에 추가되었습니다.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "장바구니에 추가되었습니다.", Toast.LENGTH_SHORT).show();
         });
 
         mLinearLayout = findViewById(R.id.bottom_sheet_layout);
@@ -138,20 +138,36 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         mCartFab.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), CartActivity.class);
 //            intent.putExtra("cartList", (Serializable) mCartList);
+
+//            intent.putExtra("restaurant", (Serializable) restaurant);
             intent.putExtra("restaurant", (Serializable) restaurant);
+
             startActivity(intent);
         });
 
         mCollapsingToolbarLayout = findViewById(R.id.toolbar_layout);
-        mCollapsingToolbarLayout.setTitle(restaurant.getName());
-        mCollapsingToolbarLayout.setBackgroundResource(restaurant.getImages().get(0));
+        mCollapsingToolbarLayout.setTitle(restaurant.get(0));
+        mCollapsingToolbarLayout.setBackgroundResource(R.drawable.china_1);
+
+//        mCollapsingToolbarLayout.setTitle(restaurant.getName());
+//        mCollapsingToolbarLayout.setBackgroundResource(restaurant.getImages().get(0));
         mCollapsingToolbarLayout.setExpandedTitleColor(Color.BLACK);
 
         mSubtitle = findViewById(R.id.textView_toolbar_subtitle);
-        mSubtitle.setText(restaurant.getLocation());
+//        mSubtitle.setText(restaurant.getLocation());
+
+        if(restaurant.size() > 1)
+            mSubtitle.setText(restaurant.get(1));
+        else
+            mSubtitle.setText("본점");
 
         mToolbar = findViewById(R.id.toolbar);
-        mToolbar.setTitle(restaurant.getName() + " " + restaurant.getLocation());
+
+//        mToolbar.setTitle(restaurant.getName() + " " + restaurant.getLocation());
+        if(restaurant.size() > 1)
+            mToolbar.setTitle(restaurant.get(0) + " " + restaurant.get(1));
+        else
+            mToolbar.setTitle(restaurant.get(0));
 
         mTabLayout = findViewById(R.id.tabLayout);
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -172,7 +188,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         });
 
         mViewPager2 = findViewById(R.id.view_pager);
-        mPagerAdapter = new MyViewPagerAdapter(this, pageCnt,restaurant);
+//        mPagerAdapter = new MyViewPagerAdapter(this, pageCnt, restaurant);
+
+        if(restaurant.size() > 1)
+            mPagerAdapter = new MyViewPagerAdapter(this, pageCnt, restaurant.get(0) + " " + restaurant.get(1));
+        else
+            mPagerAdapter = new MyViewPagerAdapter(this, pageCnt, restaurant.get(0));
         mViewPager2.setAdapter(mPagerAdapter);
 
         mViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -195,7 +216,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private int isExistMenu(String menu) {
 
         for (int i = 0; i < mCartList.size(); i++) {
-            if(mCartList.get(i).getMenu().getName().equals(menu))
+            if (mCartList.get(i).getMenu().getName().equals(menu))
                 return i;
         }
 

@@ -1,6 +1,8 @@
-package model_server;
+package model_server.restaurants;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +12,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Restaurant {
-    @SerializedName("name")
-    private String name;
-    @SerializedName("description")
-    private String description;
+    @SerializedName("names")
+    private List<Names> names;
 }

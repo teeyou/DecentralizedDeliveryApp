@@ -21,7 +21,8 @@ public class CartActivity extends AppCompatActivity {
         if(getIntent() != null) {
             Intent intent = getIntent();
 //            List<Order> cartList = (List<Order>) intent.getSerializableExtra("cartList");
-            Restaurant restaurant = (Restaurant) intent.getSerializableExtra("restaurant");
+//            Restaurant restaurant = (Restaurant) intent.getSerializableExtra("restaurant");
+            List<String> restaurant = (List<String>) intent.getSerializableExtra("restaurant");
 //            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, CartFragment.newInstance(restaurant, cartList)).commit();
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, CartFragment.newInstance(restaurant)).commit();
         }

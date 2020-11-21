@@ -2,21 +2,27 @@ package data_source;
 
 import java.util.List;
 
-import model_server.Menu;
-import model_server.OrderState;
-import model_server.Restaurant;
+import io.reactivex.rxjava3.core.Flowable;
+import model_server.menus.Menu;
+import model_server.orders.Order;
+import model_server.restaurant_detail.RestaurantDetail;
+import model_server.restaurants.Restaurant;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface RestaurantApi {
     String BASEURL = "http://ddiggo.iptime.org/";
 
     @GET("/api/restaurants")
-    Call<List<List<String>>> getRestaurantList();
+    Flowable<Restaurant> getRestaurantList();
 
-    @GET("/api/menu")
-    Call<List<Menu>> getMenuList();
+    @GET("/api/restaurants/{name}/menus")
+    Flowable<Menu> getMenuList(@Path(value = "name", encoded = true) String name);
 
-    @GET("/api/state")
-    Call<List<OrderState>> getOrderStateList();
+    @GET("/api/restaurants/{name}/orders")
+    Flowable<List<Order>> getOrderList(@Path(value = "name", encoded = true) String name);
+
+    @GET("/api/restaurants/{name}/")
+    Flowable<RestaurantDetail> getRestaurantDetail(@Path(value = "name", encoded = true) String name);
 }

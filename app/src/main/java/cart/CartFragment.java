@@ -39,7 +39,9 @@ public class CartFragment extends Fragment {
     private TextView mTotalPrice;
     private Button mBtnOrder;
 
-    private Restaurant mRestaurant;
+    //    private Restaurant mRestaurant;
+    private List<String> mRestaurant;
+
 //    private List<Order> mCartList;
 
     private RecyclerView mRecyclerView;
@@ -55,7 +57,15 @@ public class CartFragment extends Fragment {
         return fragment;
     }
 
-    public static CartFragment newInstance(Restaurant restaurant) {
+//    public static CartFragment newInstance(Restaurant restaurant) {
+//        CartFragment fragment = new CartFragment();
+//        Bundle args = new Bundle();
+//        args.putSerializable("restaurant", (Serializable) restaurant);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+
+    public static CartFragment newInstance(List<String> restaurant) {
         CartFragment fragment = new CartFragment();
         Bundle args = new Bundle();
         args.putSerializable("restaurant", (Serializable) restaurant);
@@ -63,7 +73,8 @@ public class CartFragment extends Fragment {
         return fragment;
     }
 
-    public CartFragment() {}
+    public CartFragment() {
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -77,12 +88,13 @@ public class CartFragment extends Fragment {
         View v = null;
 
 
-
         if (getArguments() != null) {
-            mRestaurant = (Restaurant) getArguments().getSerializable("restaurant");
+//            mRestaurant = (Restaurant) getArguments().getSerializable("restaurant");
+            mRestaurant = (List<String>) getArguments().getSerializable("restaurant");
+
 //            mCartList = (List<Order>) getArguments().getSerializable("cartList");
 
-            if(mCartList.size() > 0) {
+            if (mCartList.size() > 0) {
                 v = inflater.inflate(R.layout.fragment_cart, container, false);
 
                 mRestaurantName = v.findViewById(R.id.textView_cart_restaurant_name);
@@ -91,7 +103,12 @@ public class CartFragment extends Fragment {
                 mRecyclerView = v.findViewById(R.id.cart_recyclerView);
 
                 mTotalPrice.setText(Util.numberToCommaFormat(calculateTotalPrice(mCartList)));
-                mRestaurantName.setText(mRestaurant.getName() + " " + mRestaurant.getLocation());
+                if(mRestaurant.size() > 1)
+                    mRestaurantName.setText(mRestaurant.get(0) + " " + mRestaurant.get(1));
+                else
+                    mRestaurantName.setText(mRestaurant.get(0));
+
+//                mRestaurantName.setText(mRestaurant.getName() + " " + mRestaurant.getLocation());
 
                 mCartRecyclerAdapter = new CartRecyclerAdapter();
                 mCartRecyclerAdapter.setCartList(mCartList);
@@ -114,7 +131,7 @@ public class CartFragment extends Fragment {
 
     private int calculateTotalPrice(List<Order> list) {
         int price = 0;
-        for(Order order : list) price += order.getOrderPrice();
+        for (Order order : list) price += order.getOrderPrice();
 
         return price;
     }
@@ -144,7 +161,7 @@ public class CartFragment extends Fragment {
                 mCartList.remove(i);
                 mTotalPrice.setText(Util.numberToCommaFormat(calculateTotalPrice(mCartList)));
                 setCartList(mCartList);
-                Toast.makeText(getContext(),"삭제되었습니다." , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
             });
         }
 
